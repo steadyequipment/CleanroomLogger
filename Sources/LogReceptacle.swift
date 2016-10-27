@@ -77,12 +77,15 @@ public final class LogReceptacle
                     recordDispatcher {
                         for formatter in recorder.formatters {
                             var shouldBreak = false
-                            autoreleasepool {
-                                if let formatted = formatter.format(entry) {
-                                    recorder.record(message: formatted, for: entry, currentQueue: recorder.queue, synchronousMode: synchronous)
-                                    shouldBreak = true
+
+                            #if os(OSX)
+                                autoreleasepool {
+                                    shouldBreak = self.attemptRecordEntry(entry, formatter: formatter, recorder: recorder, synchronous: synchronous)
                                 }
-                            }
+                            #else
+                                // Linux will have to deal with spuratitic deallocations for now
+                                shouldBreak = self.attemptRecordEntry(entry, formatter: formatter, recorder: recorder, synchronous: synchronous)
+                            #endif
                             if shouldBreak {
                                 break
                             }
@@ -91,6 +94,16 @@ public final class LogReceptacle
                 }
             }
         }
+    }
+
+    private func attemptRecordEntry(_ entry: LogEntry, formatter: LogFormatter, recorder: LogRecorder, synchronous: Bool) -> Bool {
+
+        guard let formatted = formatter.format(entry) else {
+            return false
+        }
+
+        recorder.record(message: formatted, for: entry, currentQueue: recorder.queue, synchronousMode: synchronous)
+        return true
     }
 
     private func doesLogEntry(_ entry: LogEntry, passFilters filters: [LogFilter])

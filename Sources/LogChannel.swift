@@ -66,7 +66,11 @@ public struct LogChannel
     public func trace(_ function: String = #function, filePath: String = #file, fileLine: Int = #line)
     {
         var threadID: UInt64 = 0
-        pthread_threadid_np(nil, &threadID)
+        #if os(OSX)
+            pthread_threadid_np(nil, &threadID)
+        #else
+            threadID = UInt64(pthread_self())
+        #endif
 
         let entry = LogEntry(payload: .trace, severity: severity, callingFilePath: filePath, callingFileLine: fileLine, callingStackFrame: function, callingThreadID: threadID)
 
@@ -93,7 +97,11 @@ public struct LogChannel
     public func message(_ msg: String, function: String = #function, filePath: String = #file, fileLine: Int = #line)
     {
         var threadID: UInt64 = 0
-        pthread_threadid_np(nil, &threadID)
+        #if os(OSX)
+            pthread_threadid_np(nil, &threadID)
+        #else
+            threadID = UInt64(pthread_self())
+        #endif
 
         let entry = LogEntry(payload: .message(msg), severity: severity, callingFilePath: filePath, callingFileLine: fileLine, callingStackFrame: function, callingThreadID: threadID)
 
@@ -123,7 +131,11 @@ public struct LogChannel
     public func value(_ value: Any?, function: String = #function, filePath: String = #file, fileLine: Int = #line)
     {
         var threadID: UInt64 = 0
-        pthread_threadid_np(nil, &threadID)
+        #if os(OSX)
+            pthread_threadid_np(nil, &threadID)
+        #else
+            threadID = UInt64(pthread_self())
+        #endif
 
         let entry = LogEntry(payload: .value(value), severity: severity, callingFilePath: filePath, callingFileLine: fileLine, callingStackFrame: function, callingThreadID: threadID)
 

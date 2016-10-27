@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Dispatch
 
 /**
  A `LogRecorder` implementation that maintains a set of daily rotating log
@@ -83,7 +84,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
         -> FileLogRecorder?
     {
         let fileName = logFilename(forDate: date)
-        let filePath = (directoryPath as NSString).appendingPathComponent(fileName)
+        let filePath = NSString(string: directoryPath).appendingPathComponent(fileName)
         return FileLogRecorder(filePath: filePath, formatters: formatters)
     }
 
@@ -168,7 +169,7 @@ open class RotatingLogFileRecorder: LogRecorderBase
             let pathsToRemove = filenames
                 .filter { return !$0.hasPrefix(".") }
                 .filter { return !filesToKeep.contains($0) }
-                .map { return (self.directoryPath as NSString).appendingPathComponent($0) }
+                .map { return NSString(string: self.directoryPath).appendingPathComponent($0) }
 
             for path in pathsToRemove {
                 do {

@@ -31,7 +31,7 @@ public struct CallSiteLogFormatter: LogFormatter
     public func format(_ entry: LogEntry)
         -> String?
     {
-        let file = (entry.callingFilePath as NSString).pathComponents.last ?? "(unknown)"
+        let file = NSString(string: entry.callingFilePath).pathComponents.last ?? "(unknown)"
         return "\(file):\(entry.callingFileLine)"
     }
 }
