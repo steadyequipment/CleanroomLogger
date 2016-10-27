@@ -27,3 +27,7 @@ DerivedData
 Carthage/*
 !Carthage/Checkouts/
 **/Carthage/
+
+# Swift Package Manager
+/.build
+/Packages/
