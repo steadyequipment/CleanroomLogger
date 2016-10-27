@@ -23,6 +23,7 @@
  only a single recorder: an `ASLLogRecorder` configured to echo output to
  `stdout` as well as capturing to the ASL.
 */
+#if os(OSX)
 open class XcodeLogConfiguration: BasicLogConfiguration
 {
     /**
@@ -204,3 +205,4 @@ open class XcodeLogConfiguration: BasicLogConfiguration
         super.init(minimumSeverity: minimumSeverity, filters: filters, recorders: recorders, synchronousMode: synchronous)
     }
 }
+#endif

@@ -20,7 +20,7 @@ open class StandardOutputLogRecorder: LogRecorderBase
     */
     public init()
     {
-        super.init(formatters: [XcodeLogFormatter()])
+        super.init(formatters: [StandardLogFormatter()])
     }
 
     /**

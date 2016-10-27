@@ -6,7 +6,11 @@
 //  Copyright © 2015 Gilt Groupe. All rights reserved.
 //
 
-import Darwin.C.stdio
+#if os(OSX)
+    import Darwin.C.stdio
+#elseif os(Linux)
+    import Glibc
+#endif
 import Dispatch
 
 /**

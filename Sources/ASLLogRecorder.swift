@@ -6,6 +6,7 @@
 //  Copyright © 2015 Gilt Groupe. All rights reserved.
 //
 
+#if os(OSX)
 import Dispatch
 import CleanroomASL
 
@@ -188,3 +189,4 @@ public struct ASLLogRecorder: LogRecorder
         }
     }
 }
+#endif

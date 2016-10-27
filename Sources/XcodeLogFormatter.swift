@@ -20,6 +20,7 @@
 
  These defaults can be overridden during instantiation.
  */
+#if os(OSX)
 open class XcodeLogFormatter: StandardLogFormatter
 {
     /**
@@ -53,3 +54,4 @@ open class XcodeLogFormatter: StandardLogFormatter
         super.init(timestampStyle: timestampStyle, severityStyle: severityStyle, delimiterStyle: delimiterStyle, showCallSite: showCallSite, showCallingThread: showCallingThread, colorizer: colorizer, colorTable: colorTable)
     }
 }
+#endif

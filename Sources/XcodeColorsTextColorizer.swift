@@ -6,7 +6,11 @@
 //  Copyright © 2015 Gilt Groupe. All rights reserved.
 //
 
-import Darwin.C.stdlib
+#if os(OSX)
+    import Darwin.C.stdio
+#elseif os(Linux)
+    import Glibc
+#endif
 
 /**
  A `TextColorizer` implementation that applies 
@@ -38,7 +42,7 @@ public struct XcodeColorsTextColorizer: TextColorizer
 
     /**
      Applies XcodeColors-style formatting appropriate for the given
-     `LogSeverity` to the passed-in string.
+     `LogSeverity` to the passed-in string from shared xcodeColorize.
 
      - parameter string: The string to be colorized.
 
@@ -50,6 +54,12 @@ public struct XcodeColorsTextColorizer: TextColorizer
      applied.
      */
     public func colorize(_ str: String, foreground: Color?, background: Color?)
+        -> String
+    {
+        return XcodeColorsTextColorizer.xcodeColorize(str, foreground: foreground, background: background)
+    }
+
+    internal static func xcodeColorize(_ str: String, foreground: Color?, background: Color?)
         -> String
     {
         let esc = "\u{001b}["
@@ -87,4 +97,3 @@ fileprivate extension Color
         return "bg\(xcodeColorsString)"
     }
 }
-
